@@ -1,7 +1,6 @@
 from wordle_answer import Get_wordle_answer
 from game import Game
 
-
 def main():
     GAME_ROUNDS = 2
 

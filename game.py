@@ -1,5 +1,7 @@
 from readchar import readchar
 from termcolor import cprint
+from googletrans import LANGUAGES
+from translation import translation
 
 class Game:
     def __init__(self, word, rounds):
@@ -8,7 +10,17 @@ class Game:
         self.user_chars = []
         self.word_char_count = {}
 
+        self.lang = self.select_lang()
+
         self.game_loop(word)
+
+    def select_lang(self):
+        while True:
+            selected_lang = input("Select any language you want: ")
+
+            if selected_lang in LANGUAGES or selected_lang in LANGUAGES.values():
+                return selected_lang
+            
 
     def game_loop(self, word):
         for i in range(self.rounds):
@@ -16,14 +28,14 @@ class Game:
 
             self.user_chars = self.get_user_chars()
             self.word_char_count = self.count_word()
-            is_guessed = self.print_letters()
+            self.print_letters()
 
             self.reset_variables()
-            
-            if is_guessed or self.rounds == i + 1: break
+
+            if self.rounds == i + 1: break
 
             print(" ", end="\n")
-            print("Press any key to continue: ")
+            print(f"{translation.translate('Press any key to continue', self.lang)}: ")
             readchar()
     
     def get_user_chars(self):
@@ -47,11 +59,13 @@ class Game:
             if user_char.isalpha():
                 break
 
-            print("\nInvalid input")
+            print(f"\n{translation.translate('Invalid input', self.lang)}: ")
         
         return user_char
     
     def count_word(self):
+        print(self.word_char_count)
+
         for char in self.word:
             self.word_char_count[char] = self.word_char_count.get(char, 0) + 1
 
@@ -60,6 +74,8 @@ class Game:
                 self.word_char_count[char] -= 1
             if char in self.word_char_count and self.word_char_count[char] is 0:
                 del self.word_char_count[char]
+
+        print(self.word_char_count)
 
         return self.word_char_count
 
