@@ -1,37 +1,30 @@
 from readchar import readchar
 from termcolor import cprint
-from googletrans import LANGUAGES
 from translation import translation
 
 class Game:
-    def __init__(self, word, rounds):
+    def __init__(self, word, rounds, lang):
         self.rounds = rounds
+        self.lang = lang
+
+        self.word = list(word)
+        self.word_length = len(self.word)
 
         self.user_chars = []
         self.word_char_count = {}
 
-        self.lang = self.select_lang()
+        self.game_loop()
 
-        self.game_loop(word)
-
-    def select_lang(self):
-        while True:
-            selected_lang = input("Select any language you want: ")
-
-            if selected_lang in LANGUAGES or selected_lang in LANGUAGES.values():
-                return selected_lang
-            
-
-    def game_loop(self, word):
+    def game_loop(self):
         for i in range(self.rounds):
-            self.word = list(word)
-
             self.user_chars = self.get_user_chars()
             self.word_char_count = self.count_word()
-            self.print_letters()
+            self.won = True if len(self.word_char_count) == 0 else False
 
+            self.print_letters()
             self.reset_variables()
 
+            print(self.won)
             if self.rounds == i + 1: break
 
             print(" ", end="\n")
@@ -39,12 +32,25 @@ class Game:
             readchar()
     
     def get_user_chars(self):
-        for i in range(5):
+        index = 0
+
+        while len(self.user_chars) < self.word_length:
             print(chr(27) + "[2J")
             print('  '.join(self.user_chars), end=" ")
-            print(" _ " * (5 - i))
+            print(" _ " * (self.word_length - index))
 
-            self.user_chars.append(self.get_user_input())
+            user_input = self.get_user_input()
+
+            if user_input is not False:
+                self.user_chars.append(user_input)
+                index += 1
+
+                continue
+
+            elif index > 0:
+                self.user_chars.pop()
+                index -= 1
+
 
         print(chr(27) + "[2J")
 
@@ -56,6 +62,9 @@ class Game:
         while True:
             user_char = readchar()
 
+            if ord(user_char) == 8:
+                return False
+
             if user_char.isalpha():
                 break
 
@@ -64,8 +73,6 @@ class Game:
         return user_char
     
     def count_word(self):
-        print(self.word_char_count)
-
         for char in self.word:
             self.word_char_count[char] = self.word_char_count.get(char, 0) + 1
 
@@ -74,8 +81,6 @@ class Game:
                 self.word_char_count[char] -= 1
             if char in self.word_char_count and self.word_char_count[char] is 0:
                 del self.word_char_count[char]
-
-        print(self.word_char_count)
 
         return self.word_char_count
 
