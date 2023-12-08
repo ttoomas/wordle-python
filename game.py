@@ -2,6 +2,8 @@ from readchar import readchar
 from termcolor import cprint
 from translation import translation
 from csv_handler import Csv_handler
+import time
+from datetime import datetime
 
 class Game:
     def __init__(self, word, rounds, lang):
@@ -14,7 +16,11 @@ class Game:
         self.user_chars = []
         self.word_char_count = {}
 
+        start_time = time.time()
+
         self.game_loop()
+
+        end_time = time.time()
         
         # TODO - translate
         if not self.won:
@@ -23,7 +29,11 @@ class Game:
             return
         
         print("You guessed it!")
-        Csv_handler.write("".join(self.word))
+
+        final_time = round(end_time - start_time)
+        current_datetime = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+
+        Csv_handler.write("".join(self.word), final_time, current_datetime)
         
 
     def game_loop(self):
@@ -33,7 +43,7 @@ class Game:
             self.won = True if len(self.word_char_count) == 0 else False
 
             self.print_letters()
-            self.reset_variables()
+            self.reset_variables()            
 
             if self.rounds == i + 1 or self.won: break
 
@@ -69,14 +79,11 @@ class Game:
     def get_user_input(self):
         user_char = ""
 
-        while True:
+        while not user_char.isalpha():
             user_char = readchar()
 
             if ord(user_char) == 8:
                 return False
-
-            if user_char.isalpha():
-                break
 
             print(f"\n{translation.translate('Invalid input', self.lang)}: ")
         

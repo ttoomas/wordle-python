@@ -25,8 +25,6 @@ class Get_wordle_answer:
         return data
     
     def _generate_wordle(wordle_data, played_words):
-        wordle = ""
-
         non_played_words = [i for i in wordle_data if i not in played_words]
         if len(non_played_words) == 0: return False
 

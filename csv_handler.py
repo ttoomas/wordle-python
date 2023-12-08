@@ -1,10 +1,12 @@
 import csv
 import os
 
-fieldnames = ['word']
+fieldnames = ['word', 'time', 'date']
 
 class Csv_handler():
-    def write(word):
+    csv_rows = []
+    
+    def write(word, time, date):
         exist_folder = True
 
         if not os.path.isdir('.data'):
@@ -18,19 +20,28 @@ class Csv_handler():
             if not exist_folder or os.path.getsize('.data/data.csv') == 0:
                 writer.writerow(fieldnames)
 
-            writer.writerow([word])
-        
-    def get_played_words():
-        words = []
+            writer.writerow([word, time, date])
 
+    # TODO - read data after every write to file
+    def read_csv_data(re_read = False):
+        if len(Csv_handler.csv_rows) > 0 and not re_read:
+            return Csv_handler.csv_rows
+
+        Csv_handler.csv_rows = []
+        
         try:
-            file = open(".data/data.csv", "r", encoding="UTF8")
-            reader = csv.reader(file)
-            next(reader)
-            
-            for row in reader:
-                words.append(row[0])
+            with open(".data/data.csv", "r", encoding="UTF8") as file:
+                reader = csv.reader(file)
+                next(reader)
+                
+                for row in reader:
+                    Csv_handler.csv_rows.append(row)
         except:
-            words = []
+            Csv_handler.csv_rows = []
+
+        return Csv_handler.csv_rows
+            
+    def get_played_words():
+        words = [i[0] for i in Csv_handler.read_csv_data()]
         
         return words
