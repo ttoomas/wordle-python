@@ -4,7 +4,11 @@ from translation import translation
 class Mode():
     def __new__(self):
         lang = self.select_lang()
-        mode = self.select_game_mode(lang)
+
+        mode = 1
+        
+        if lang != "en":
+            mode = self.select_game_mode(lang)
 
         return {
             "lang": lang,

@@ -1,6 +1,7 @@
 from readchar import readchar
 from termcolor import cprint
 from translation import translation
+from csv_handler import Csv_handler
 
 class Game:
     def __init__(self, word, rounds, lang):
@@ -14,6 +15,16 @@ class Game:
         self.word_char_count = {}
 
         self.game_loop()
+        
+        # TODO - translate
+        if not self.won:
+            print("You did not guessed the word")
+            print("Do you want to play again?")
+            return
+        
+        print("You guessed it!")
+        Csv_handler.write("".join(self.word))
+        
 
     def game_loop(self):
         for i in range(self.rounds):
@@ -24,8 +35,7 @@ class Game:
             self.print_letters()
             self.reset_variables()
 
-            print(self.won)
-            if self.rounds == i + 1: break
+            if self.rounds == i + 1 or self.won: break
 
             print(" ", end="\n")
             print(f"{translation.translate('Press any key to continue', self.lang)}: ")
