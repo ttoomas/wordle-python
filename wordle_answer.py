@@ -15,7 +15,10 @@ class Get_wordle_answer:
         if game_mode["mode"] is 2 and game_mode["lang"] != "en" and game_mode["lang"] != "english":
             translated_wordle_word = self._translate_word(wordle_word, game_mode["lang"])
 
-        return translated_wordle_word
+        return {
+            "original_word": wordle_word,
+            "translated_word": translated_wordle_word
+        }
 
     def _load_json(json_name):
         json_data = open(json_name)

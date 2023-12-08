@@ -2,15 +2,14 @@ from googletrans import LANGUAGES
 from translation import translation
 from tabulate import tabulate
 from csv_handler import Csv_handler
+from readchar import readchar
 
 class Mode():
+    prev_lang = False
+
     def __new__(self):
         lang = self.select_lang()
-
-        mode = 1
-
-        if lang != "en":
-            mode = self.select_game_mode(lang)
+        mode = self.select_game_mode(lang)
 
         return {
             "lang": lang,
@@ -18,29 +17,55 @@ class Mode():
         }
 
     def select_lang():
+        if Mode.prev_lang:
+            return Mode.prev_lang
+
+        # print(chr(27) + "[2J")
+
         selected_lang = ""
 
         while selected_lang not in LANGUAGES and selected_lang not in LANGUAGES.values():
             selected_lang = input("Select any language you want: ").strip().lower()
+
+        Mode.prev_lang = selected_lang
         
-        return selected_lang
+        return Mode.prev_lang
     
     def select_game_mode(lang):
         selected_mode = False
+        possible_game_modes = ("1", "2", "3")
 
-        print(translation.translate("Now you can select game mode you want to play", lang))
-        print(translation.translate("Enter 1 for classic mode. In this mode, you will have to guess 5-letter word in english", lang))
-        print(translation.translate("Enter 2 for translated mode. In this mode, you will have to guess word, that has been translated from english, so number of letters is unknown", lang))
-        print()
+        intro_text = (
+            "Now you can select game mode you want to play.\n\n"
+            "Enter 1 for classic mode. In this mode, you will have to guess 5 letter word in english.\n"
+            "Enter 2 for translated mode. In this mode, you will have to guess word, that has been translated from english, so number of letters is unknown.\n"
+            "Enter 3 to view your all-time game stats"
+        )
 
-        while selected_mode is not "1" and selected_mode is not "2":
-            selected_mode = input(f"{translation.translate('Now select game mode you want to place (1 or 2)', lang)}: ").strip()
-        
+        print(chr(27) + "[2J")
+        print(translation.translate(intro_text, lang), end="\n\n")
+
+        while selected_mode not in possible_game_modes:
+            selected_mode = input(f"{translation.translate('Now select game mode you want to place (1, 2 or 3)', lang)}: ").strip()
+
+        if selected_mode == "3":
+            print(chr(27) + "[2J")
+            Mode.print_results(lang)
+
+            print(f"\n{translation.translate('Press any key to continue', lang)}: ")
+            readchar()
+            
+            return Mode(lang)
+
         return int(selected_mode)
     
     def print_results(lang):
         played_words = Csv_handler.read_csv_data()
-        played_words = [[word[0], word[1] + "s", word[2]] for word in played_words]
+
+        if len(played_words) == 0:
+            played_words = [["", "", ""]]
+        else:
+            played_words = [[word[0], word[1] + "s", word[2]] for word in played_words]
 
         translated_headers = [
             translation.translate("Word", lang),

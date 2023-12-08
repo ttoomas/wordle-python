@@ -21,8 +21,9 @@ class Csv_handler():
                 writer.writerow(fieldnames)
 
             writer.writerow([word, time, date])
+        
+        Csv_handler.read_csv_data(re_read=True)
 
-    # TODO - read data after every write to file
     def read_csv_data(re_read = False):
         if len(Csv_handler.csv_rows) > 0 and not re_read:
             return Csv_handler.csv_rows

@@ -4,13 +4,15 @@ from translation import translation
 from csv_handler import Csv_handler
 import time
 from datetime import datetime
+from mode import Mode
 
 class Game:
     def __init__(self, word, rounds, lang):
         self.rounds = rounds
         self.lang = lang
-
-        self.word = list(word)
+        
+        self.word = list(word["translated_word"])
+        self.original_word = word["original_word"]
         self.word_length = len(self.word)
 
         self.user_chars = []
@@ -28,12 +30,14 @@ class Game:
             print("Do you want to play again?")
             return
         
-        print("You guessed it!")
-
         final_time = round(end_time - start_time)
         current_datetime = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
-        Csv_handler.write("".join(self.word), final_time, current_datetime)
+        Csv_handler.write(self.original_word, final_time, current_datetime)
+
+        print(f"\n{translation.translate('Congratulation, You guessed it!', self.lang)}")
+        print(f"\n{translation.translate('Press any key to continue', self.lang)}: ")
+        readchar()
         
 
     def game_loop(self):
