@@ -46,3 +46,12 @@ class Csv_handler():
         words = [i[0] for i in Csv_handler.read_csv_data()]
         
         return words
+    
+    def clear_file():
+        if not os.path.isfile(".data/data.csv"):
+            return
+        
+        with open(".data/data.csv", "w") as file:
+            file.truncate()
+
+            Csv_handler.read_csv_data(re_read=True)
