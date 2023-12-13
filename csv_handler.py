@@ -1,6 +1,7 @@
 import csv
 import os
 
+FILE_PATH_NAME = ".data/data.csv"
 fieldnames = ['word', 'time', 'date']
 
 class Csv_handler():
@@ -11,18 +12,20 @@ class Csv_handler():
 
         if not os.path.isdir('.data'):
             os.mkdir('.data')
-        if not os.path.isfile('.data/data.csv'):
+        if not os.path.isfile(FILE_PATH_NAME):
             exist_folder = False
 
-        with open(".data/data.csv", "a+", newline="", encoding="UTF8") as file:
+        with open(FILE_PATH_NAME, "a+", newline="", encoding="UTF8") as file:
             writer = csv.writer(file)
 
-            if not exist_folder or os.path.getsize('.data/data.csv') == 0:
+            if not exist_folder or os.path.getsize(FILE_PATH_NAME) == 0:
                 writer.writerow(fieldnames)
 
             writer.writerow([word, time, date])
         
         Csv_handler.read_csv_data(re_read=True)
+
+        return True
 
     def read_csv_data(re_read = False):
         if len(Csv_handler.csv_rows) > 0 and not re_read:
@@ -31,7 +34,7 @@ class Csv_handler():
         Csv_handler.csv_rows = []
         
         try:
-            with open(".data/data.csv", "r", encoding="UTF8") as file:
+            with open(FILE_PATH_NAME, "r", encoding="UTF8") as file:
                 reader = csv.reader(file)
                 next(reader)
                 
@@ -48,10 +51,12 @@ class Csv_handler():
         return words
     
     def clear_file():
-        if not os.path.isfile(".data/data.csv"):
+        if not os.path.isfile(FILE_PATH_NAME):
             return
         
-        with open(".data/data.csv", "w") as file:
+        with open(FILE_PATH_NAME, "w") as file:
             file.truncate()
 
             Csv_handler.read_csv_data(re_read=True)
+
+            return True

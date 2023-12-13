@@ -57,7 +57,7 @@ class Mode():
             selected_mode = input(f"{translation.translate('Now select game mode you want to place (1, 2, 3 or 4)', lang)}: ").strip()
 
         if selected_mode == "3":
-            # print(chr(27) + "[2J")
+            print(chr(27) + "[2J")
             Mode.print_results(lang)
 
             print(f"\n{translation.translate('Press any key to continue', lang)}: ")
@@ -103,7 +103,7 @@ class Mode():
             "Type 2 if you want to end the game\n"
         )
 
-        # print(chr(27) + "[2J")
+        print(chr(27) + "[2J")
         print(translation.translate(text, lang), end="\n\n")
 
         while selected not in possible_modes:
