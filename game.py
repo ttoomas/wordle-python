@@ -24,10 +24,13 @@ class Game:
 
         end_time = time.time()
         
-        # TODO - translate
         if not self.won:
-            print("You did not guessed the word")
-            print("Do you want to play again?")
+            text = (
+                "You did not guessed the word. \n"
+                "Do you want to play again?"
+            )
+
+            print(translation.translate(text, self.lang))
             return
         
         final_time = round(end_time - start_time)

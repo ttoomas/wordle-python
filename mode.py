@@ -15,7 +15,7 @@ class Mode():
 
         mode = self.select_game_mode(lang)
 
-        if mode == True:
+        if mode is True:
             return True
 
         return {

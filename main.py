@@ -4,7 +4,7 @@ from mode import Mode
 from csv_handler import Csv_handler
 
 GAME_ROUNDS = 2
-WORDLE_JSON_NAME = "wordle_en.json"
+WORDLE_JSON_NAME = "wordle.json"
 
 def main():
     while True:
