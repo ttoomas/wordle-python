@@ -114,7 +114,8 @@ class Game:
             if ord(user_char) == 8:
                 return False
 
-            print(f"\n{translation.translate('Invalid input', self.lang)}: ")
+            if not user_char.isalpha():
+                print(f"\n{translation.translate('Invalid input', self.lang)}: ")
 
         return user_char
 
