@@ -24,4 +24,5 @@ py -m pylint mode.py
 py -m pylint main.py
 py -m pylint game.py
 py -m pylint csv_handler.py
+py -m pylint utils.py
 ```

@@ -8,6 +8,7 @@ from readchar import readchar
 from termcolor import cprint
 from translation import translation
 from csv_handler import CsvHandler
+from utils import Utils
 
 class Game:
     """
@@ -49,9 +50,9 @@ class Game:
 
         CsvHandler.write(self.original_word, final_time, current_datetime)
 
-        print(f"\n{translation.translate('Congratulation, You guessed it!', self.lang)}")
-        print(f"\n{translation.translate('Press any key to continue', self.lang)}: ")
-        readchar()
+        print(f"\n{translation.translate('Congratulation, You guessed it!', self.lang)}\n")
+        
+        Utils.press_continue(self.lang)
 
     def _game_loop(self):
         """
@@ -70,8 +71,7 @@ class Game:
                 break
 
             print(" ", end="\n")
-            print(f"{translation.translate('Press any key to continue', self.lang)}: ")
-            readchar()
+            Utils.press_continue(self.lang)
 
     def _get_user_chars(self):
         """
@@ -81,7 +81,7 @@ class Game:
         index = 0
 
         while len(self.user_chars) < self.word_length:
-            print(chr(27) + "[2J")
+            Utils.clear_terminal()
             print('  '.join(self.user_chars), end=" ")
             print(" _ " * (self.word_length - index))
 
@@ -97,7 +97,7 @@ class Game:
                 self.user_chars.pop()
                 index -= 1
 
-        print(chr(27) + "[2J")
+        Utils.clear_terminal()
 
         return self.user_chars
 

@@ -7,6 +7,7 @@ from readchar import readchar
 from tabulate import tabulate
 from translation import translation
 from csv_handler import CsvHandler
+from utils import Utils
 
 class Mode:
     """
@@ -45,7 +46,7 @@ class Mode:
         if Mode.prev_lang:
             return Mode.prev_lang
 
-        print(chr(27) + "[2J")
+        Utils.clear_terminal()
 
         selected_lang = ""
 
@@ -76,7 +77,7 @@ class Mode:
             "Enter 4 to end the game"
         )
 
-        print(chr(27) + "[2J")
+        Utils.clear_terminal()
         print(translation.translate(intro_text, lang), end="\n\n")
 
         while selected_mode not in possible_game_modes:
@@ -84,11 +85,10 @@ class Mode:
             selected_mode = input(f"{translation.translate(text, lang)}: ").strip()
 
         if selected_mode == "3":
-            print(chr(27) + "[2J")
+            Utils.clear_terminal()
             Mode._print_results(lang)
 
-            print(f"\n{translation.translate('Press any key to continue', lang)}: ")
-            readchar()
+            Utils.press_continue(lang)
 
             return Mode(lang)
         if selected_mode == "4":
@@ -140,7 +140,7 @@ class Mode:
             "Enter 2 if you want to end the game\n"
         )
 
-        print(chr(27) + "[2J")
+        Utils.clear_terminal()
         print(translation.translate(text, lang), end="\n\n")
 
         while selected not in possible_modes:
