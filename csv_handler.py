@@ -1,13 +1,27 @@
+"""
+CSV Handler Module
+"""
+
 import csv
 import os
 
 FILE_PATH_NAME = ".data/data.csv"
 fieldnames = ['word', 'time', 'date']
 
-class Csv_handler():
+class CsvHandler:
+    """
+    Csv handler class
+    """
+
     csv_rows = []
-    
+
+    @staticmethod
     def write(word, time, date):
+        """
+        Method for writing word, time and date
+        inside of csv file
+        """
+
         exist_folder = True
 
         if not os.path.isdir('.data'):
@@ -22,41 +36,57 @@ class Csv_handler():
                 writer.writerow(fieldnames)
 
             writer.writerow([word, time, date])
-        
-        Csv_handler.read_csv_data(re_read=True)
+
+        CsvHandler.read_csv_data(re_read=True)
 
         return True
 
+    @staticmethod
     def read_csv_data(re_read = False):
-        if len(Csv_handler.csv_rows) > 0 and not re_read:
-            return Csv_handler.csv_rows
+        """
+        Method for reading csv data from file
+        """
 
-        Csv_handler.csv_rows = []
-        
+        if len(CsvHandler.csv_rows) > 0 and not re_read:
+            return CsvHandler.csv_rows
+
+        CsvHandler.csv_rows = []
+
         try:
             with open(FILE_PATH_NAME, "r", encoding="UTF8") as file:
                 reader = csv.reader(file)
                 next(reader)
-                
-                for row in reader:
-                    Csv_handler.csv_rows.append(row)
-        except:
-            Csv_handler.csv_rows = []
 
-        return Csv_handler.csv_rows
-            
+                for row in reader:
+                    CsvHandler.csv_rows.append(row)
+        except Exception:
+            CsvHandler.csv_rows = []
+
+        return CsvHandler.csv_rows
+
+    @staticmethod
     def get_played_words():
-        words = [i[0] for i in Csv_handler.read_csv_data()]
-        
+        """
+        Method for getting played words
+        """
+
+        words = [i[0] for i in CsvHandler.read_csv_data()]
+
         return words
-    
+
+    @staticmethod
     def clear_file():
+        """
+        Method for clearing csv file
+        """
+
         if not os.path.isfile(FILE_PATH_NAME):
-            return
-        
-        with open(FILE_PATH_NAME, "w") as file:
+            return False
+
+        with open(FILE_PATH_NAME, "w", encoding="UTF-8") as file:
             file.truncate()
 
-            Csv_handler.read_csv_data(re_read=True)
+            CsvHandler.read_csv_data(re_read=True)
 
             return True
+

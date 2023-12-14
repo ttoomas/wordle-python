@@ -1,19 +1,32 @@
-from googletrans import LANGUAGES
-from translation import translation
-from tabulate import tabulate
-from csv_handler import Csv_handler
-from readchar import readchar
+"""
+Game Mode module
+"""
 
-class Mode():
+from googletrans import LANGUAGES
+from readchar import readchar
+from tabulate import tabulate
+from translation import translation
+from csv_handler import CsvHandler
+
+class Mode:
+    """
+    Game Mode class
+    """
+
     prev_lang = False
 
-    def __new__(self, given_lang = False):
+    def __new__(cls, given_lang = False):
+        """
+        Method for selecting game mode
+        and returning selection
+        """
+
         lang = given_lang
 
         if not lang:
-            lang = self.select_lang()
+            lang = cls._select_lang()
 
-        mode = self.select_game_mode(lang)
+        mode = cls._select_game_mode(lang)
 
         if mode is True:
             return True
@@ -23,7 +36,12 @@ class Mode():
             "mode": mode
         }
 
-    def select_lang():
+    @staticmethod
+    def _select_lang():
+        """
+        Method for selection lang by user input
+        """
+
         if Mode.prev_lang:
             return Mode.prev_lang
 
@@ -35,17 +53,25 @@ class Mode():
             selected_lang = input("Select any language you want: ").strip().lower()
 
         Mode.prev_lang = selected_lang
-        
+
         return Mode.prev_lang
-    
-    def select_game_mode(lang):
+
+    @staticmethod
+    def _select_game_mode(lang):
+        """
+        Method for selecting game mode by user input
+        """
+
         selected_mode = False
         possible_game_modes = ("1", "2", "3", "4")
 
         intro_text = (
             "Now you can select game mode you want to play.\n\n"
-            "Enter 1 for classic mode. In this mode, you will have to guess 5 letter word in english.\n"
-            "Enter 2 for translated mode. In this mode, you will have to guess word, that has been translated from english, so number of letters is unknown.\n"
+            "Enter 1 for classic mode. In this mode,"
+            "you will have to guess 5 letter word in english.\n"
+            "Enter 2 for translated mode. In this mode, you will"
+            "have to guess word, that has been translated from english,"
+            "so number of letters is unknown.\n"
             "Enter 3 to view your all-time game stats\n"
             "Enter 4 to end the game"
         )
@@ -54,23 +80,29 @@ class Mode():
         print(translation.translate(intro_text, lang), end="\n\n")
 
         while selected_mode not in possible_game_modes:
-            selected_mode = input(f"{translation.translate('Now select game mode you want to place (1, 2, 3 or 4)', lang)}: ").strip()
+            text = "Now select game mode you want to place (1, 2, 3 or 4)"
+            selected_mode = input(f"{translation.translate(text, lang)}: ").strip()
 
         if selected_mode == "3":
             print(chr(27) + "[2J")
-            Mode.print_results(lang)
+            Mode._print_results(lang)
 
             print(f"\n{translation.translate('Press any key to continue', lang)}: ")
             readchar()
-            
+
             return Mode(lang)
-        elif selected_mode == "4":
+        if selected_mode == "4":
             return True
 
         return int(selected_mode)
-    
-    def print_results(lang):
-        played_words = Csv_handler.read_csv_data()
+
+    @staticmethod
+    def _print_results(lang):
+        """
+        Method for printing game results
+        """
+
+        played_words = CsvHandler.read_csv_data()
 
         if len(played_words) == 0:
             played_words = [["", "", ""]]
@@ -93,7 +125,12 @@ class Mode():
 
         print(table)
 
+    @staticmethod
     def no_word(lang):
+        """
+        Method for handling no word in possible wordle words
+        """
+
         selected = False
         possible_modes = ("1", "2")
 
@@ -107,13 +144,15 @@ class Mode():
         print(translation.translate(text, lang), end="\n\n")
 
         while selected not in possible_modes:
-            selected = input(f"{translation.translate('Now select, what do you want to play (1 or 2)', lang)}: ").strip()
-        
+            text = "Now select, what do you want to play (1 or 2)"
+            selected = input(f"{translation.translate(text, lang)}: ").strip()
+
         if selected == "2":
             return True
-        
-        Csv_handler.clear_file()
+
+        CsvHandler.clear_file()
 
         Mode(lang)
 
         return False
+
