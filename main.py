@@ -7,8 +7,8 @@ from game import Game
 from mode import Mode
 from csv_handler import CsvHandler
 
-GAME_ROUNDS = 2
-WORDLE_JSON_NAME = "wordle.json"
+GAME_ROUNDS = 6
+WORDLE_JSON_NAME = "wordle_test_words.json"
 
 def main():
     """
