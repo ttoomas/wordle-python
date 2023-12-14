@@ -89,4 +89,3 @@ class CsvHandler:
             CsvHandler.read_csv_data(re_read=True)
 
             return True
-

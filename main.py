@@ -38,4 +38,3 @@ def main():
         Game(wordle_word, GAME_ROUNDS, game_mode["lang"])
 
 main()
-

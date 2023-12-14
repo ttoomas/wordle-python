@@ -37,4 +37,3 @@ class Translate:
         return self.cache[string_to_translate][to_lang]
 
 translation = Translate()
-

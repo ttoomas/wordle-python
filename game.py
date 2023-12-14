@@ -37,7 +37,7 @@ class Game:
 
         if not self.won:
             text = (
-                "You did not guessed the word. \n"
+                "You did not guess the word. \n"
                 "Do you want to play again?"
             )
 
@@ -165,4 +165,3 @@ class Game:
 
         self.user_chars = []
         self.word_char_count = {}
-

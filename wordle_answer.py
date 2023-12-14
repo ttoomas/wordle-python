@@ -67,4 +67,3 @@ class GetWordleAnswer:
         translated_word = translation.translate(word, lang).lower()
 
         return translated_word
-

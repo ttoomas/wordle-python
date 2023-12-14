@@ -52,7 +52,7 @@ def test_get_wordle():
     Method for testing wordle word
     """
 
-    json_name = "wordle.json"
+    json_name = "wordle_words.json"
     game_mode = {
         "lang": "cs",
         "mode": 2
@@ -82,4 +82,3 @@ def test_translation(word, lang, translated):
     result = translation.translate(word, lang)
 
     assert translated == result
-

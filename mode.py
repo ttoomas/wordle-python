@@ -71,7 +71,7 @@ class Mode:
             "you will have to guess 5 letter word in english.\n"
             "Enter 2 for translated mode. In this mode, you will"
             "have to guess word, that has been translated from english,"
-            "so number of letters is unknown.\n"
+            "so the number of letters is unknown.\n"
             "Enter 3 to view your all-time game stats\n"
             "Enter 4 to end the game"
         )
@@ -80,7 +80,7 @@ class Mode:
         print(translation.translate(intro_text, lang), end="\n\n")
 
         while selected_mode not in possible_game_modes:
-            text = "Now select game mode you want to place (1, 2, 3 or 4)"
+            text = "Now select game mode you want to play (1, 2, 3 or 4)"
             selected_mode = input(f"{translation.translate(text, lang)}: ").strip()
 
         if selected_mode == "3":
@@ -136,8 +136,8 @@ class Mode:
 
         text = (
             "You guessed all the words, congratulation.\n"
-            "Type 1 if you want to delete your statistics and play again\n"
-            "Type 2 if you want to end the game\n"
+            "Enter 1 if you want to delete your statistics and play again\n"
+            "Enter 2 if you want to end the game\n"
         )
 
         print(chr(27) + "[2J")
@@ -155,4 +155,3 @@ class Mode:
         game_ended = Mode(lang)
 
         return game_ended is True
-
