@@ -152,7 +152,7 @@ class Mode:
 
         CsvHandler.clear_file()
 
-        Mode(lang)
+        game_ended = Mode(lang)
 
-        return False
+        return game_ended is True
 
